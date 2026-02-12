@@ -5,31 +5,31 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 
-export class RecipeService {
+export class ProductsService {
   constructor(private http: HttpClient) {}
 
-  recipes = signal<any>({
+  product = signal<any>({
     data: [],
     isLoading: false,
   });
 
-  getRecipes() {
-    this.recipes.update((prev: any) => ({
+  getProducts() {
+    this.product.update((prev: any) => ({
       ...prev,
       isLoading: true,
     }));
-    this.http.get('https://dummyjson.com/recipes').subscribe({
+    this.http.get('https://dummyjson.com/products').subscribe({
       next: (response: any) => {
-        this.recipes.update((prev: any) => ({
+        this.product.update((prev: any) => ({
           ...prev,
-          data: response.recipes,
+          data: response.products,
         }));
       },
       error: (error) => {
-        console.error('Error fetching recipes:', error);
+        console.error('Error fetching product:', error);
       },
       complete: () => {
-        this.recipes.update((prev: any) => ({
+        this.product.update((prev: any) => ({
           ...prev,
           isLoading: false,
         }));
@@ -37,11 +37,11 @@ export class RecipeService {
     });
   }
 
-  addRecipe(recipe: any) {
-    this.http.post('https://dummyjson.com/recipes/add', recipe).subscribe({
+  addProduct(product: any) {
+    this.http.post('https://dummyjson.com/products/add', product).subscribe({
       next: (response) => {
         console.log('Recipe added successfully:', response);
-        this.getRecipes(); // Refresh the recipe list after adding a new recipe
+        this.getProducts();
       },
       error: (error) => {
         console.error('Error adding recipe:', error);
@@ -49,11 +49,11 @@ export class RecipeService {
     });
   }
 
-  updateRecipe(id: number, updatedRecipe: any) {
-    this.http.put(`https://dummyjson.com/recipes/${id}`, updatedRecipe).subscribe({
+  updateProduct(id: number, updatedProduct: any) {
+    this.http.patch(`https://dummyjson.com/products/${id}`, updatedProduct).subscribe({
       next: (response) => {
         console.log('Recipe updated successfully:', response);
-        this.getRecipes(); // Refresh the recipe list after updating a recipe
+        this.getProducts();
       },
       error: (error) => {
         console.error('Error updating recipe:', error);
@@ -61,11 +61,11 @@ export class RecipeService {
     });
   }
 
-  deleteRecipe(id: number) {
-    this.http.delete(`https://dummyjson.com/recipes/${id}`).subscribe({
+  deleteProduct(id: number) {
+    this.http.delete(`https://dummyjson.com/products/${id}`).subscribe({
       next: (response) => {
         console.log('Recipe deleted successfully:', response);
-        this.getRecipes(); // Refresh the recipe list after deleting a recipe
+        this.getProducts();
       },
       error: (error) => {
         console.error('Error deleting recipe:', error);

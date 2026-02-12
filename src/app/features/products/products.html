@@ -1,0 +1,219 @@
+<h2 class="text-4xl font-bold">Add a Product</h2>
+<form class="grid gap-6 mb-6 md:grid-cols-2">
+  <div>
+    <label for="title" class="block mb-2.5 text-sm font-medium text-heading">Title</label>
+    <input
+      type="text"
+      [(ngModel)]="productData.title"
+      name="title"
+      id="title"
+      class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+    />
+  </div>
+  <div>
+    <label for="category" class="block mb-2.5 text-sm font-medium text-heading">Category</label>
+    <input
+      type="text"
+      [(ngModel)]="productData.category"
+      name="category"
+      id="category"
+      class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+    />
+  </div>
+  <button
+    type="button"
+    class="btn text-body bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none"
+    (click)="addProduct()"
+  >
+    Add Product
+  </button>
+</form>
+
+<div
+  class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default"
+>
+  <table class="w-full text-sm text-left rtl:text-right text-body">
+    <thead class="text-sm text-body bg-neutral-secondary-soft border-b rounded-base border-default">
+      <tr>
+        <th scope="col" class="px-6 py-3 font-medium">Product ID</th>
+        <th scope="col" class="px-6 py-3 font-medium">Title</th>
+        <th scope="col" class="px-6 py-3 font-medium">Category</th>
+        <th scope="col" class="px-6 py-3 font-medium">Price</th>
+        <th scope="col" class="px-6 py-3 font-medium">Brand</th>
+        <th scope="col" class="px-6 py-3 font-medium">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of product().data; track $index) {
+        <tr class="bg-neutral-primary border-b border-default">
+          <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+            {{ item.id }}
+          </th>
+          <td class="px-6 py-4">{{ item.title }}</td>
+          <td class="px-6 py-4">{{ item.category }}</td>
+          <td class="px-6 py-4">{{ item.price }}</td>
+          <td class="px-6 py-4">{{ item.brand }}</td>
+          <td class="px-6 py-4">
+            <!-- <button
+              data-modal-target="popup-modal"
+              data-modal-toggle="popup-modal"
+              type="button"
+              class="btn rounded-full text-body bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm p-2.5 focus:outline-none"
+            >
+              <svg
+                class="w-6 h-6 text-gray-800 dark:text-body"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"
+                />
+              </svg>
+            </button> -->
+
+            <button
+              (click)="toggleModal()"
+              type="button"
+              class="btn rounded-full text-body bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm p-2.5 focus:outline-none"
+            >
+              <svg
+                class="w-6 h-6 text-gray-800 dark:text-body"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"
+                />
+              </svg>
+            </button>
+
+            <!-- Main modal -->
+            <div
+              id="default-modal"
+              [class.hidden]="!isModalOpen"
+              [class.flex]="isModalOpen"
+              >
+              <div class="relative p-4 w-full max-w-2xl max-h-full">
+                <!-- Modal content -->
+                <div
+                  class="bg-white relative bg-neutral-primary-soft border border-default rounded-base shadow-sm p-4 md:p-6"
+                >
+                  <!-- Modal header -->
+                  <div class="flex items-center justify-between border-b border-default pb-4 md:pb-5">
+                    <h3 class="text-lg font-medium text-heading">Update Product</h3>
+                    <button
+                      type="button"
+                      (click)="toggleModal()"
+                      class="text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-base text-sm w-9 h-9 ms-auto inline-flex justify-center items-center"
+                    >
+                      <svg
+                        class="w-5 h-5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M6 18 17.94 6M18 18 6.06 6"
+                        />
+                      </svg>
+                      <span class="sr-only">Close modal</span>
+                    </button>
+                  </div>
+
+                  <!-- Modal body -->
+                  <div class="bg-inherit">
+                    <form class="gap-6 mb-6">
+                      <div>
+                        <label for="title1" class="block mb-2.5 text-sm font-medium text-heading"
+                          >Title</label
+                        >
+                        <input
+                          type="text1"
+                          [(ngModel)]="editProduct.title"
+                          name="title1"
+                          id="title1"
+                          class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                        />
+                      </div>
+                      <div>
+                        <label for="category1" class="block mb-2.5 text-sm font-medium text-heading"
+                          >Category</label
+                        >
+                        <input
+                          type="text"
+                          [(ngModel)]="editProduct.category"
+                          name="category1"
+                          id="category1"
+                          class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                        />
+                      </div>
+                    </form>
+                  </div>
+
+                  <!-- Modal footer -->
+                  <div class="flex items-center border-t border-default space-x-4 pt-4 md:pt-5">
+                    <button
+                      data-modal-hide="default-modal"
+                      type="button"
+                      class="text-body bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none"
+                      (click)="updateProduct(item.id)"
+                    >
+                      Update
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="btn rounded-full text-body bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm p-2.5 focus:outline-none"
+              (click)="deleteProduct(item.id)"
+            >
+              <svg
+                class="w-6 h-6 text-gray-800 dark:text-body"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+                />
+              </svg>
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

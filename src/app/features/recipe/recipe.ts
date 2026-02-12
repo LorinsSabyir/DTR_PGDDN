@@ -1,7 +1,8 @@
-import { Component, signal, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RecipeService } from './recipe.service';
 import { FormsModule } from '@angular/forms';
 import { Button } from '../../shared/components/button/button';
+
 @Component({
   selector: 'app-recipe',
   imports: [FormsModule, Button],
@@ -17,7 +18,6 @@ export class Recipe implements OnInit {
 
   ngOnInit(): void {
     this.getRecipes();
-
   }
 
   getRecipes() {
